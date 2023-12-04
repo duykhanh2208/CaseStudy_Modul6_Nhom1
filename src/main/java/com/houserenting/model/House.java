@@ -20,6 +20,7 @@ public class House {
     private String ward;
     private String houseNumber;
     private int bedroom;
+    private int bed;
     private int bathroom;
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -27,7 +28,7 @@ public class House {
     private String facility;
     private double price;
     private int sale;
-    private double area;
+    private double acreage;
     @Column(columnDefinition = "TEXT")
     private String thumbnail;
     private String status;
