@@ -9,6 +9,7 @@ import com.houserenting.service.UserService;
 import com.houserenting.service.impl.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -113,28 +114,22 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         user.setId(userOptional.get().getId());
-        user.setUsername(userOptional.get().getUsername());
-        user.setEnabled(userOptional.get().isEnabled());
-        user.setPassword(userOptional.get().getPassword());
-        user.setRoles(userOptional.get().getRoles());
-        user.setConfirmPassword(userOptional.get().getConfirmPassword());
-
-        user.setFirstname(userOptional.get().getFirstname());
-        user.setLastname(userOptional.get().getLastname());
-        user.setAddress(userOptional.get().getAddress());
-        user.setProvince(userOptional.get().getProvince());
-        user.setDistrict(userOptional.get().getDistrict());
-        user.setWard(userOptional.get().getWard());
-        user.setEmail(userOptional.get().getEmail());
-        user.setPhone(userOptional.get().getPhone());
-        user.setAvatar(userOptional.get().getAvatar());
-        user.setWallet(userOptional.get().getWallet());
-        user.setFrontside(userOptional.get().getFrontside());
-        user.setBackside(userOptional.get().getBackside());
-
-
-
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PutMapping("/users/changepassword/{id}")
+    public ResponseEntity<User> changePassword(@PathVariable Long id, @RequestBody User user){
+        Optional<User> userWithOldPassword = this.userService.findById(id);
+        if(!userWithOldPassword.isPresent()){
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
+            userWithOldPassword.get().setPassword(user.getPassword());
+            userWithOldPassword.get().setConfirmPassword(user.getConfirmPassword());
+            userService.save(userWithOldPassword.get());
+            return new ResponseEntity<>(userWithOldPassword.get(),HttpStatus.OK);
+        }
     }
 }
