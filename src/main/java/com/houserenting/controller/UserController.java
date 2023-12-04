@@ -42,7 +42,7 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
 
-    @GetMapping("/users")
+    @GetMapping("/users") //Không dùng phương thức này. Sai phân quyền.
     public ResponseEntity<Iterable<User>> showAllUser() {
         Iterable<User> users = userService.findAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
