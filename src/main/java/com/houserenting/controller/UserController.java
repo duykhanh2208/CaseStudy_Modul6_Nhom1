@@ -132,4 +132,18 @@ public class UserController {
             return new ResponseEntity<>(userWithOldPassword.get(),HttpStatus.OK);
         }
     }
+    @PutMapping("/admin/changepassword/{id}")
+    public ResponseEntity<User> changePasswordAdmin(@PathVariable Long id, @RequestBody User user){
+        Optional<User> userWithOldPassword = this.userService.findById(id);
+        if(!userWithOldPassword.isPresent()){
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
+            userWithOldPassword.get().setPassword(user.getPassword());
+            userWithOldPassword.get().setConfirmPassword(user.getConfirmPassword());
+            userService.save(userWithOldPassword.get());
+            return new ResponseEntity<>(userWithOldPassword.get(),HttpStatus.OK);
+        }
+    }
 }
