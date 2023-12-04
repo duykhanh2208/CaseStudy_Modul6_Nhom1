@@ -119,6 +119,21 @@ public class UserController {
         user.setRoles(userOptional.get().getRoles());
         user.setConfirmPassword(userOptional.get().getConfirmPassword());
 
+        user.setFirstname(userOptional.get().getFirstname());
+        user.setLastname(userOptional.get().getLastname());
+        user.setAddress(userOptional.get().getAddress());
+        user.setProvince(userOptional.get().getProvince());
+        user.setDistrict(userOptional.get().getDistrict());
+        user.setWard(userOptional.get().getWard());
+        user.setEmail(userOptional.get().getEmail());
+        user.setPhone(userOptional.get().getPhone());
+        user.setAvatar(userOptional.get().getAvatar());
+        user.setWallet(userOptional.get().getWallet());
+        user.setFrontside(userOptional.get().getFrontside());
+        user.setBackside(userOptional.get().getBackside());
+
+
+
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
