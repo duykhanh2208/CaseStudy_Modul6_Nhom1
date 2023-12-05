@@ -21,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -112,38 +113,46 @@ public class UserController {
         Optional<User> userOptional = this.userService.findById(id);
         if (!userOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            Set<Role> mapRole = user.getRoles();
+            for (Role m : mapRole) {
+                if (m.getId() == 1) {
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                }
+            }
+            user.setId(userOptional.get().getId());
+            userService.save(user);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }
-        user.setId(userOptional.get().getId());
-        userService.save(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PutMapping("/users/changepassword/{id}")
-    public ResponseEntity<User> changePassword(@PathVariable Long id, @RequestBody User user){
+    public ResponseEntity<User> changePassword(@PathVariable Long id, @RequestBody User user) {
         Optional<User> userWithOldPassword = this.userService.findById(id);
-        if(!userWithOldPassword.isPresent()){
-            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        if (!userWithOldPassword.isPresent()) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
             userWithOldPassword.get().setPassword(user.getPassword());
             userWithOldPassword.get().setConfirmPassword(user.getConfirmPassword());
             userService.save(userWithOldPassword.get());
-            return new ResponseEntity<>(userWithOldPassword.get(),HttpStatus.OK);
+            return new ResponseEntity<>(userWithOldPassword.get(), HttpStatus.OK);
         }
     }
+
     @PutMapping("/admin/changepassword/{id}")
-    public ResponseEntity<User> changePasswordAdmin(@PathVariable Long id, @RequestBody User user){
+    public ResponseEntity<User> changePasswordAdmin(@PathVariable Long id, @RequestBody User user) {
         Optional<User> userWithOldPassword = this.userService.findById(id);
-        if(!userWithOldPassword.isPresent()){
-            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        if (!userWithOldPassword.isPresent()) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
             userWithOldPassword.get().setPassword(user.getPassword());
             userWithOldPassword.get().setConfirmPassword(user.getConfirmPassword());
             userService.save(userWithOldPassword.get());
-            return new ResponseEntity<>(userWithOldPassword.get(),HttpStatus.OK);
+            return new ResponseEntity<>(userWithOldPassword.get(), HttpStatus.OK);
         }
     }
 }
