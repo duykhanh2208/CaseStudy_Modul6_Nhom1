@@ -78,6 +78,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/register").permitAll()
                         .requestMatchers("/users/**").hasAnyAuthority("ROLE_RENTER","ROLE_OWNER")
+                        .requestMatchers("/house/**").hasAnyAuthority("ROLE_OWNER", "ROLE_ADMIN")
+                        .requestMatchers("/booking/**").hasAnyAuthority("ROLE_OWNER", "ROLE_ADMIN","ROLE_OWNER")
+                        .requestMatchers("/image/**").hasAnyAuthority("ROLE_OWNER")
                         .requestMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
                 )
                 .exceptionHandling(customizer -> customizer.accessDeniedHandler(customAccessDeniedHandler()))
