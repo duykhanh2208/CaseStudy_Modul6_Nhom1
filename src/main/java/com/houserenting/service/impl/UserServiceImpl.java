@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -107,7 +108,10 @@ public class UserServiceImpl implements UserService {
         }
         return isRegister;
     }
-
+    @Override
+    public List<User> findAllOwner() {
+        return userRepository.findAllOwner();
+    }
     @Override
     public boolean isCorrectConfirmPassword(User user) {
         return user.getPassword().equals(user.getConfirmPassword());

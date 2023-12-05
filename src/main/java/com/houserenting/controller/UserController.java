@@ -55,7 +55,18 @@ public class UserController {
         Iterable<User> users = userService.findAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
-
+    @GetMapping("/admin/{id}")
+    public ResponseEntity<Optional<User>> FindUserDetail(@PathVariable Long id){
+        Optional<User> user = userService.findById(id);
+        if(user.isPresent()){
+            return new ResponseEntity<>(user,HttpStatus.OK);
+        } return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+    }
+    @GetMapping("/admin/owners")
+    public ResponseEntity<Iterable<User>> findAllOwner(){
+        Iterable<User> listOwner = userService.findAllOwner();
+        return new ResponseEntity<>(listOwner,HttpStatus.OK);
+    }
     @PostMapping("/register")
     public ResponseEntity<User> createUser(@RequestBody User user, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
