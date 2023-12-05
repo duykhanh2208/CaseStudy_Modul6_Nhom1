@@ -14,6 +14,7 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String url;
+    private String status;
     @ManyToOne
     private House house;
     public Image(String url, House house){
