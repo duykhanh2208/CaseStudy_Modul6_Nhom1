@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -42,7 +43,6 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
 
     @GetMapping("/users") //Không dùng phương thức này. Sai phân quyền.
     public ResponseEntity<Iterable<User>> showAllUser() {
@@ -152,7 +152,6 @@ public class UserController {
             return new ResponseEntity<>(userWithOldPassword.get(), HttpStatus.OK);
         }
     }
-
     @PutMapping("/admin/changepassword/{id}")
     public ResponseEntity<User> changePasswordAdmin(@PathVariable Long id, @RequestBody User user) {
         Optional<User> userWithOldPassword = this.userService.findById(id);
