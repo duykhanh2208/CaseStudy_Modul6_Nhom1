@@ -20,6 +20,12 @@ public class HouseServiceImpl implements HouseService {
         return houseRepository.findAll();
     }
 
+
+    @Override
+    public Iterable<House> findAllByOwnerId(Long id) {
+        return houseRepository.findAllByOwnerId(id);
+    }
+
     @Override
     public Optional<House> findOne(Long id) {
         return houseRepository.findById(id);
@@ -40,4 +46,6 @@ public class HouseServiceImpl implements HouseService {
         }
         return null;
     }
+
+
 }

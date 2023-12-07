@@ -19,6 +19,13 @@ public class HouseController {
     public ResponseEntity<Iterable<House>> showList(){
         return new ResponseEntity<>(houseServiceImpl.showAll(), HttpStatus.OK);
     }
+
+    @GetMapping("/houses/{id}")
+    public ResponseEntity<Iterable<House>> showListHouseByOwner(@PathVariable Long id){
+        return new ResponseEntity<>(houseServiceImpl.findAllByOwnerId(id), HttpStatus.OK);
+    }
+
+
     @GetMapping("/{id}")
     public ResponseEntity<Optional<House>> showOne(@PathVariable Long id){
         Optional<House> house = houseServiceImpl.findOne(id);
