@@ -1,6 +1,7 @@
 package com.houserenting.controller;
 
 
+import com.houserenting.dto.ChangePasswordInfo;
 import com.houserenting.model.JwtResponse;
 import com.houserenting.model.Role;
 import com.houserenting.model.User;
@@ -9,9 +10,7 @@ import com.houserenting.service.UserService;
 import com.houserenting.service.impl.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,7 +21,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -138,32 +136,21 @@ public class UserController {
         }
     }
 
-    @PutMapping("/users/changepassword/{id}")
-    public ResponseEntity<User> changePassword(@PathVariable Long id, @RequestBody User user) {
+    @PutMapping("/api/changePassword/{id}")
+    public ResponseEntity<User> changePassword(@PathVariable Long id, @RequestBody ChangePasswordInfo info) {
         Optional<User> userWithOldPassword = this.userService.findById(id);
         if (!userWithOldPassword.isPresent()) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } else {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
-            userWithOldPassword.get().setPassword(user.getPassword());
-            userWithOldPassword.get().setConfirmPassword(user.getConfirmPassword());
-            userService.save(userWithOldPassword.get());
-            return new ResponseEntity<>(userWithOldPassword.get(), HttpStatus.OK);
-        }
-    }
-    @PutMapping("/admin/changepassword/{id}")
-    public ResponseEntity<User> changePasswordAdmin(@PathVariable Long id, @RequestBody User user) {
-        Optional<User> userWithOldPassword = this.userService.findById(id);
-        if (!userWithOldPassword.isPresent()) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        } else {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setConfirmPassword(passwordEncoder.encode(user.getConfirmPassword()));
-            userWithOldPassword.get().setPassword(user.getPassword());
-            userWithOldPassword.get().setConfirmPassword(user.getConfirmPassword());
-            userService.save(userWithOldPassword.get());
-            return new ResponseEntity<>(userWithOldPassword.get(), HttpStatus.OK);
+            User user = userWithOldPassword.get();
+            if(passwordEncoder.matches(info.getOldPassword(), user.getPassword())){
+                user.setPassword(passwordEncoder.encode(info.getNewPassword()));
+                user.setConfirmPassword(passwordEncoder.encode(info.getConfirmNewPassword()));
+                userService.save(user);
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }
         }
     }
 }
