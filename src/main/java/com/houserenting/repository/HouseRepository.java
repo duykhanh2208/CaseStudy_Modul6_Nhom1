@@ -11,8 +11,4 @@ import java.util.List;
 @Repository
 public interface HouseRepository extends JpaRepository<House, Long> {
     List<House> findAllByOwnerId(Long id);
-<<<<<<< HEAD
-=======
-
->>>>>>> ownerhouse
 }
