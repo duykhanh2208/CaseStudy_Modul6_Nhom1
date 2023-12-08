@@ -2,6 +2,7 @@ package com.houserenting.controller;
 
 
 import com.houserenting.dto.ChangePasswordInfo;
+import com.houserenting.dto.ObjectWith2String;
 import com.houserenting.model.JwtResponse;
 import com.houserenting.model.Role;
 import com.houserenting.model.User;
@@ -112,6 +113,7 @@ public class UserController {
         return new ResponseEntity("Hello World", HttpStatus.OK);
     }
 
+
     @GetMapping("/users/{id}")
     public ResponseEntity<User> getProfile(@PathVariable Long id) {
         Optional<User> userOptional = this.userService.findById(id);
@@ -136,6 +138,7 @@ public class UserController {
         }
     }
 
+
     @PutMapping("/api/changePassword/{id}")
     public ResponseEntity<User> changePassword(@PathVariable Long id, @RequestBody ChangePasswordInfo info) {
         Optional<User> userWithOldPassword = this.userService.findById(id);
@@ -151,6 +154,19 @@ public class UserController {
             } else {
                 return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
             }
+        }
+    }
+
+    @PutMapping("/user/updateFirstNameAndLastName")
+    public ResponseEntity<User> updateFirstNameAndLastName( @RequestBody ObjectWith2String objectWith2String){
+        Optional<User> user = userService.findById(objectWith2String.getId());
+        if(user.isPresent()){
+            user.get().setFirstname(objectWith2String.getString1());
+            user.get().setLastname(objectWith2String.getString2());
+            userService.save(user.get());
+            return new ResponseEntity<>(user.get(),HttpStatus.ACCEPTED);
+        }else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }
