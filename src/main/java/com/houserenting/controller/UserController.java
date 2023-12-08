@@ -158,13 +158,13 @@ public class UserController {
     }
 
     @PutMapping("/user/updateFirstNameAndLastName")
-    public ResponseEntity<User> updateFirstNameAndLastName( @RequestBody ObjectWith2String objectWith2String){
-        Optional<User> user = userService.findById(objectWith2String.getId());
-        if(user.isPresent()){
-            user.get().setFirstname(objectWith2String.getString1());
-            user.get().setLastname(objectWith2String.getString2());
-            userService.save(user.get());
-            return new ResponseEntity<>(user.get(),HttpStatus.ACCEPTED);
+    public ResponseEntity<User> updateFirstNameAndLastName( @RequestBody User user){
+        Optional<User> user1 = userService.findById(user.getId());
+        if(user1.isPresent()){
+            user1.get().setFirstname(user.getFirstname());
+            user1.get().setLastname(user.getLastname());
+            userService.save(user1.get());
+            return new ResponseEntity<>(user1.get(),HttpStatus.ACCEPTED);
         }else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
