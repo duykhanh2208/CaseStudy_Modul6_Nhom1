@@ -53,6 +53,11 @@ public class User implements Serializable {
         this.roles = roles;
     }
 
+    public User(Long id, String email) {
+        this.id = id;
+        this.email = email;
+    }
+
     public User(Long id, String firstname, String lastname) {
         this.id = id;
         this.firstname = firstname;
