@@ -19,6 +19,8 @@ public interface UserService extends UserDetailsService {
 
     Optional<User> findById(Long id);
 
+    Optional<User> findByEmail(String email);
+
     UserDetails loadUserById(Long id);
 
     boolean checkLogin(User user);

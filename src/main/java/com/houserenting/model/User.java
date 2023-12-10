@@ -22,7 +22,7 @@ public class User implements Serializable {
 
     @Column(nullable = false)
     private String confirmPassword;
-    private boolean enabled = true;
+    private boolean enabled = false;
     private String firstname;
     private String lastname;
     private String address;
