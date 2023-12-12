@@ -107,7 +107,7 @@ public class UserController {
         verificationTokenService.save(token);
 
         email.sendEmail(user.getEmail(), "Xác thực tài khoản", "Nhấn vào đường dẫn để xác nhận tài khoản" + "\r\n" +
-               "http://localhost:8080/api/regitrationConfirm?token=" + token.getToken());
+               "http://localhost:3000/api/registrationConfirm/" + token.getToken());
 
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
@@ -266,19 +266,37 @@ public class UserController {
         }
     }
 
-    @GetMapping("/api/regitrationConfirm")
+    @GetMapping("/api/registrationConfirm")
     public ResponseEntity<User> confirmRegistration(@RequestParam("token") String token) {
         VerificationToken verificationToken = verificationTokenService.findByToken(token);
         if(verificationToken == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Calendar cal = Calendar.getInstance();
         if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         User user = verificationToken.getUser();
         user.setEnabled(true);
         userService.save(user);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping("/api/checkEmail/{email}")
+    public ResponseEntity<User> checkEmail(@PathVariable("email") String email) {
+        Optional<User> optionalUser = userService.findByEmail(email);
+        if(optionalUser.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+    }
+    @GetMapping("/api/checkUsername/{username}")
+    public ResponseEntity<User> checkUsername(@PathVariable("username") String username) {
+        User user = userService.findByUsername(username);
+        if(user != null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
     }
 }
