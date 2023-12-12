@@ -323,12 +323,13 @@ public class UserController {
         role.setId(2L);
         Role role1 = new Role();
         role.setId(3L);
-        user.setStatus("");
+        user1.get().setStatus("");
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         roles.add(role1);
         user.setRoles(roles);
-        return new ResponseEntity<>(user,HttpStatus.OK);
+        userService.save(user1.get());
+        return new ResponseEntity<>(user1.get(),HttpStatus.OK);
     } else {
            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
        }}
