@@ -73,6 +73,12 @@ public class UserController {
         return new ResponseEntity<>(listOwner,HttpStatus.OK);
     }
 
+    @GetMapping("/admin/renters")
+    public ResponseEntity<Iterable<User>> findAllRenter(){
+        Iterable<User> listRenter = userService.findAllRenter();
+        return new ResponseEntity<>(listRenter,HttpStatus.OK);
+    }
+
     @PostMapping("/register")
     public ResponseEntity<User> createUser(@RequestBody User user, BindingResult bindingResult) {
         user.setAvatar("https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg?w=900");
@@ -326,4 +332,13 @@ public class UserController {
     } else {
            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
        }}
+    @GetMapping("/admin/showListAccountAreWaitingConfirm")
+    public ResponseEntity<List<User>> showListAccountAreWaitingConfirm(){
+        List <User> userList = userService.findAllRenterIsWaitingConfirm();
+        if (userList.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(userList, HttpStatus.OK);
+        }
+    }
 }

@@ -117,8 +117,19 @@ public class UserServiceImpl implements UserService {
     public List<User> findAllOwner() {
         return userRepository.findAllOwner();
     }
+
+    @Override
+    public List<User> findAllRenter() {
+        return userRepository.findAllRenter();
+    }
+
     @Override
     public boolean isCorrectConfirmPassword(User user) {
         return user.getPassword().equals(user.getConfirmPassword());
+    }
+
+    @Override
+    public List<User> findAllRenterIsWaitingConfirm() {
+        return userRepository.findAllRenterIsWaitingConfirm();
     }
 }

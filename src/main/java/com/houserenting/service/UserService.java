@@ -30,4 +30,7 @@ public interface UserService extends UserDetailsService {
     boolean isCorrectConfirmPassword(User user);
 
     List<User> findAllOwner();
+    List<User> findAllRenter();
+    List<User> findAllRenterIsWaitingConfirm();
+
 }
