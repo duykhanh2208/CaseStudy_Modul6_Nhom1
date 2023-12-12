@@ -164,7 +164,6 @@ public class UserController {
         Optional<User> userOptional = this.userService.findById(id);
         return userOptional.map(user -> new ResponseEntity<>(user, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
     @PutMapping("/users/{id}")
     public ResponseEntity<User> updateUserProfile(@PathVariable Long id, @RequestBody User user) {
         Optional<User> userOptional = this.userService.findById(id);
@@ -299,4 +298,32 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
+    @PutMapping("/api/confirmingWaited/{id}")
+    public ResponseEntity<User> confirmingWaited(@PathVariable Long id){
+        Optional<User> user = this.userService.findById(id);
+        if (!user.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            user.get().setStatus("AdminConfirm");
+            userService.save(user.get());
+            return new ResponseEntity<>(user.get(),HttpStatus.OK);
+        }
+    }
+    @PutMapping("/admin/allowOwnerUserToBeActive")
+    public ResponseEntity<User> allowOwnerUserToBeActive(@RequestBody User user){
+       Optional<User> user1 = userService.findById(user.getId());
+       if (user1.isPresent()){
+        Role role = new Role();
+        role.setId(2L);
+        Role role1 = new Role();
+        role.setId(3L);
+        user.setStatus("");
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+        roles.add(role1);
+        user.setRoles(roles);
+        return new ResponseEntity<>(user,HttpStatus.OK);
+    } else {
+           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }}
 }
