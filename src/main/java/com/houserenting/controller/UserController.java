@@ -327,7 +327,7 @@ public class UserController {
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         roles.add(role1);
-        user.setRoles(roles);
+           user1.get().setRoles(roles);
         userService.save(user1.get());
         return new ResponseEntity<>(user1.get(),HttpStatus.OK);
     } else {
