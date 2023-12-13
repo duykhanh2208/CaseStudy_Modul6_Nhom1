@@ -266,6 +266,7 @@ public class UserController {
             user1.get().setAddress(user.getAddress());
             userService.save(user1.get());
             return new ResponseEntity<>(user1.get(),HttpStatus.ACCEPTED);
+
         }else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
