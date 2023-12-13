@@ -317,18 +317,22 @@ public class UserController {
     }
     @PutMapping("/admin/allowOwnerUserToBeActive")
     public ResponseEntity<User> allowOwnerUserToBeActive(@RequestBody User user) {
-
-        Role role = new Role();
-        role.setId(2L);
-        Role role1 = new Role();
-        role.setId(3L);
-        user.setStatus("");
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
-        roles.add(role1);
-        user.setRoles(roles);
-        userService.save(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        Optional<User> user1 = userService.findById(user.getId());
+        if (user1.isPresent()) {
+            Role role = new Role();
+            role.setId(2L);
+            Role role1 = new Role();
+            role1.setId(3L);
+            user1.get().setStatus(null);
+            Set<Role> roles = new HashSet<>();
+            roles.add(role);
+            roles.add(role1);
+            user1.get().setRoles(roles);
+            userService.save(user1.get());
+            return new ResponseEntity<>(user1.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
     }
     @GetMapping("/admin/showListAccountAreWaitingConfirm")
     public ResponseEntity<List<User>> showListAccountAreWaitingConfirm(){
