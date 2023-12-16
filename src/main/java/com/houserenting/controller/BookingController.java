@@ -1,5 +1,6 @@
 package com.houserenting.controller;
 
+import com.houserenting.dto.ChangeALocalDateAndTimeOfABooking;
 import com.houserenting.model.Booking;
 import com.houserenting.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,31 @@ public class BookingController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("updateStartTimeOfABooking")
+    public ResponseEntity<Booking> updateStartTimeOfABooking (@RequestBody ChangeALocalDateAndTimeOfABooking changeALocalDateAndTimeOfABooking){
+        Optional<Booking> oldBooking = bookingServiceImpl.findOne(changeALocalDateAndTimeOfABooking.getId());
+        if(oldBooking.isPresent()){
+            oldBooking.get().setStartTime(changeALocalDateAndTimeOfABooking.getLocalDateTime());
+            bookingServiceImpl.save(oldBooking.get());
+            return new ResponseEntity<>(oldBooking.get(),HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("updateEndTimeOfABooking")
+    public ResponseEntity<Booking> updateEndTimeOfABooking (@RequestBody ChangeALocalDateAndTimeOfABooking changeALocalDateAndTimeOfABooking){
+        Optional<Booking> oldBooking = bookingServiceImpl.findOne(changeALocalDateAndTimeOfABooking.getId());
+        if(oldBooking.isPresent()){
+            oldBooking.get().setEndTime(changeALocalDateAndTimeOfABooking.getLocalDateTime());
+            bookingServiceImpl.save(oldBooking.get());
+            return new ResponseEntity<>(oldBooking.get(),HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> delete(@PathVariable Long id){
