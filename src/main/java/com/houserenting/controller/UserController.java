@@ -317,23 +317,47 @@ public class UserController {
         }
     }
     @PutMapping("/admin/allowOwnerUserToBeActive")
-    public ResponseEntity<User> allowOwnerUserToBeActive(@RequestBody User user){
-       Optional<User> user1 = userService.findById(user.getId());
-       if (user1.isPresent()){
-        Role role = new Role();
-        role.setId(2L);
-        Role role1 = new Role();
-        role.setId(3L);
-        user1.get().setStatus("");
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
-        roles.add(role1);
-        user.setRoles(roles);
-        userService.save(user1.get());
-        return new ResponseEntity<>(user1.get(),HttpStatus.OK);
-    } else {
-           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-       }}
+    public ResponseEntity<User> allowOwnerUserToBeActive(@RequestBody User user) {
+        Optional<User> user1 = userService.findById(user.getId());
+        if (user1.isPresent()) {
+            Role role = new Role();
+            role.setId(2L);
+            Role role1 = new Role();
+            role1.setId(3L);
+            user1.get().setStatus(null);
+            Set<Role> roles = new HashSet<>();
+            roles.add(role);
+            roles.add(role1);
+            user1.get().setRoles(roles);
+            userService.save(user1.get());
+            return new ResponseEntity<>(user1.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+    @PutMapping("/admin/blockUser")
+    public ResponseEntity<User> adminBlockUser(@RequestBody User user) {
+        Optional<User> user1 = userService.findById(user.getId());
+        if (user1.isPresent()) {
+               user1.get().setStatus(null);
+               userService.save(user1.get());
+               return new ResponseEntity<>(user1.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+    @PutMapping("/admin/openUser")
+    public ResponseEntity<User> adminOpenUser(@RequestBody User user) {
+        Optional<User> user1 = userService.findById(user.getId());
+        if (user1.isPresent()) {
+            user1.get().setStatus("Blocked");
+            userService.save(user1.get());
+            return new ResponseEntity<>(user1.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/admin/showListAccountAreWaitingConfirm")
     public ResponseEntity<List<User>> showListAccountAreWaitingConfirm(){
         List <User> userList = userService.findAllRenterIsWaitingConfirm();

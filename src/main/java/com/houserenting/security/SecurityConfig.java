@@ -82,7 +82,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/register", "/api/**").permitAll()
                         .requestMatchers("/users/**").hasAnyAuthority("ROLE_RENTER","ROLE_OWNER")
-                        .requestMatchers("/house/**","/booking/**").hasAnyAuthority("ROLE_OWNER", "ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/house/**").permitAll()
+                        .requestMatchers("/house/**","/booking/**").hasAnyAuthority("ROLE_OWNER")
                         .requestMatchers("/image/**").hasAnyAuthority("ROLE_OWNER")
                         .requestMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
                 )
