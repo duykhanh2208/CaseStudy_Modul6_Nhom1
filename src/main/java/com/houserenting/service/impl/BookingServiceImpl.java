@@ -1,11 +1,14 @@
 package com.houserenting.service.impl;
 
 import com.houserenting.model.Booking;
+import com.houserenting.model.House;
 import com.houserenting.repository.BookingRepository;
 import com.houserenting.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -36,5 +39,11 @@ public class BookingServiceImpl implements BookingService {
            return id;
        }
        return null;
+    }
+
+    @Override
+    public List<Booking> findAllByHouseAndStartTimeGreaterThanEqual(House house) {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        return bookingRepository.findAllByHouseAndStartTimeGreaterThanEqual(house, currentDateTime);
     }
 }

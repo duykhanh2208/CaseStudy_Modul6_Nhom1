@@ -317,24 +317,23 @@ public class UserController {
         }
     }
     @PutMapping("/admin/allowOwnerUserToBeActive")
-    public ResponseEntity<User> allowOwnerUserToBeActive(@RequestBody User user) {
+    public ResponseEntity<User> allowOwnerUserToBeActive(@RequestBody User user){
         Optional<User> user1 = userService.findById(user.getId());
-        if (user1.isPresent()) {
+        if (user1.isPresent()){
             Role role = new Role();
             role.setId(2L);
             Role role1 = new Role();
             role1.setId(3L);
-            user1.get().setStatus(null);
+            user1.get().setStatus("");
             Set<Role> roles = new HashSet<>();
             roles.add(role);
             roles.add(role1);
             user1.get().setRoles(roles);
             userService.save(user1.get());
-            return new ResponseEntity<>(user1.get(), HttpStatus.OK);
+            return new ResponseEntity<>(user1.get(),HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-    }
+           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }}
     @PutMapping("/admin/blockUser")
     public ResponseEntity<User> adminBlockUser(@RequestBody User user) {
         Optional<User> user1 = userService.findById(user.getId());
