@@ -1,6 +1,7 @@
 package com.houserenting.controller;
 
 import com.houserenting.model.Booking;
+import com.houserenting.model.House;
 import com.houserenting.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/booking")
+    @RequestMapping("/booking")
 public class BookingController {
     @Autowired
     private BookingService bookingServiceImpl;
@@ -19,6 +20,12 @@ public class BookingController {
     @GetMapping("/bookings")
     public ResponseEntity<Iterable<Booking>> showList(){
         return new ResponseEntity<>(bookingServiceImpl.showAll(), HttpStatus.OK);
+    }
+    @GetMapping("/bookings/now/{id}")
+    public ResponseEntity<Iterable<Booking>> findAllByHouseAndStartTimeGreaterThanEqual(@PathVariable Long id){
+        House house = new House();
+        house.setId(id);
+        return new ResponseEntity<>(bookingServiceImpl.findAllByHouseAndStartTimeGreaterThanEqual(house), HttpStatus.OK);
     }
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Booking>> showOne(@PathVariable Long id){

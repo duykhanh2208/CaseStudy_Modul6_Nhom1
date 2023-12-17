@@ -6,6 +6,8 @@ import com.houserenting.repository.BookingRepository;
 import com.houserenting.repository.HouseRepository;
 import com.houserenting.service.HouseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,6 +20,10 @@ public class HouseServiceImpl implements HouseService {
     @Override
     public Iterable<House> showAll() {
         return houseRepository.findAll();
+    }
+    @Override
+    public Page<House> showHousePages(Pageable pageable) {
+        return houseRepository.findAll( pageable);
     }
 
 
