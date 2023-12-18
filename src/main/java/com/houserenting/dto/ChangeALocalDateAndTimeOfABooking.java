@@ -7,5 +7,6 @@ import java.time.LocalDateTime;
 @Data
 public class ChangeALocalDateAndTimeOfABooking {
     private Long id;
-    private LocalDateTime localDateTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 }
