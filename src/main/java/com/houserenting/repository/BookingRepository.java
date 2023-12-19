@@ -17,6 +17,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query(value = "select * from booking where user_id = ?",nativeQuery = true)
     List<Booking> UserWantToSeeBookingHistory(@Param("id") long id);
 
-    @Query(value = "select booking.house_id, count(booking.house_id) as count from booking group by house_id order by count desc limit 5;",nativeQuery = true)
+    @Query(value = "select booking.house_id, count(booking.house_id) as count from booking group by house_id order by count desc limit 6;",nativeQuery = true)
     List<Long> Top5HouseBooking();
 }

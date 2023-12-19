@@ -5,6 +5,7 @@ import com.houserenting.model.Booking;
 import com.houserenting.model.House;
 import com.houserenting.model.User;
 import com.houserenting.service.BookingService;
+import com.houserenting.service.HouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +27,8 @@ import java.time.LocalDateTime;
 public class BookingController {
     @Autowired
     private BookingService bookingServiceImpl;
+    @Autowired
+    private HouseService houseServiceimpl;
 
     @GetMapping("/bookings")
     public ResponseEntity<Iterable<Booking>> showList() {
@@ -115,7 +119,13 @@ public class BookingController {
     }
 
     @GetMapping ("/Top5HouseBooking")
-    public ResponseEntity<List<Long>> Top5HouseBooking (){
-        return new ResponseEntity<>(bookingServiceImpl.Top5HouseBooking(),HttpStatus.OK);
+    public ResponseEntity<List<House>> Top5HouseBooking (){
+
+        List<Long> listTop5 = bookingServiceImpl.Top5HouseBooking();
+        List<House> ListHouseTop5 = new ArrayList<>();
+        for (int i = 0; i <listTop5.size() ; i++) {
+            ListHouseTop5.add(houseServiceimpl.findOne(listTop5.get(i)).get());
+        }
+      return new ResponseEntity<>(ListHouseTop5,HttpStatus.OK);
     }
 }
