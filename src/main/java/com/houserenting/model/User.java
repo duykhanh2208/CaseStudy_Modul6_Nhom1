@@ -40,6 +40,10 @@ public class User implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String backside;
 
+    public User(Long id) {
+        this.id = id;
+    }
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},

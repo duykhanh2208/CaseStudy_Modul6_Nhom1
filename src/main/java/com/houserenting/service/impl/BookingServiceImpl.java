@@ -46,4 +46,14 @@ public class BookingServiceImpl implements BookingService {
         LocalDateTime currentDateTime = LocalDateTime.now();
         return bookingRepository.findAllByHouseAndStartTimeGreaterThanEqual(house, currentDateTime);
     }
+
+    @Override
+    public List<Booking> UserWantToSeeBookingHistory(Long id) {
+        return bookingRepository.UserWantToSeeBookingHistory(id);
+    }
+
+    @Override
+    public List<Long> Top5HouseBooking() {
+        return bookingRepository.Top5HouseBooking();
+    }
 }

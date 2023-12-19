@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface BookingService extends GeneralService<Booking>{
     List<Booking> findAllByHouseAndStartTimeGreaterThanEqual(House house);
+    List<Booking> UserWantToSeeBookingHistory(Long id);
+    List<Long> Top5HouseBooking();
 }
