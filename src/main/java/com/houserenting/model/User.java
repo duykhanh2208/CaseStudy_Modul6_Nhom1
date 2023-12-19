@@ -34,7 +34,8 @@ public class User implements Serializable {
     private String phone;
     private String avatar;
     private double wallet;
-    private String status; // Active/Inactive/WaitConfirming/
+    @Column(nullable = false)
+    private String status = "1"; // Active/Inactive/WaitConfirming/
     @Column(columnDefinition = "TEXT")
     private String frontside;
     @Column(columnDefinition = "TEXT")
