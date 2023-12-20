@@ -56,4 +56,11 @@ public class BookingServiceImpl implements BookingService {
     public List<Long> Top5HouseBooking() {
         return bookingRepository.Top5HouseBooking();
     }
+
+    @Override
+    public List<Booking> ShowListBookingOfTheOwner(Long id) {
+        List<Booking> bookings = bookingRepository.ShowListBookingOfTheOwner(id);
+        System.out.println(bookings);
+        return bookings;
+    }
 }

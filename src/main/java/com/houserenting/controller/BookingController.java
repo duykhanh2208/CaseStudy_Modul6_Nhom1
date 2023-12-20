@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Duration;
 import java.time.LocalDateTime;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/booking")
@@ -106,10 +107,10 @@ public class BookingController {
         LocalDateTime dateTime2 = booking.getStartTime();
         long hoursBetween = ChronoUnit.HOURS.between(dateTime1, dateTime2);
         if (booking1.isPresent()) {
-            if (hoursBetween > 24 && dateTime1.isBefore(dateTime2)){
+            if (hoursBetween > 24 && dateTime1.isBefore(dateTime2)) {
                 booking1.get().setStatus("Đã hủy");
                 bookingServiceImpl.save(booking1.get());
-                return new ResponseEntity<>(booking1.get(),HttpStatus.OK);
+                return new ResponseEntity<>(booking1.get(), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             }
@@ -118,14 +119,47 @@ public class BookingController {
         }
     }
 
-    @GetMapping ("/Top5HouseBooking")
-    public ResponseEntity<List<House>> Top5HouseBooking (){
+    @GetMapping("/Top5HouseBooking")
+    public ResponseEntity<List<House>> Top5HouseBooking() {
 
         List<Long> listTop5 = bookingServiceImpl.Top5HouseBooking();
         List<House> ListHouseTop5 = new ArrayList<>();
-        for (int i = 0; i <listTop5.size() ; i++) {
+        for (int i = 0; i < listTop5.size(); i++) {
             ListHouseTop5.add(houseServiceimpl.findOne(listTop5.get(i)).get());
         }
-      return new ResponseEntity<>(ListHouseTop5,HttpStatus.OK);
+        return new ResponseEntity<>(ListHouseTop5, HttpStatus.OK);
+    }
+
+    @PostMapping("/ShowListBookingOfTheOwner")
+    public ResponseEntity<List<Booking>> ShowListBookingOfTheOwnerFunction(@RequestBody User user) {
+        if (user.getId() != null) {
+            List<Booking> bookings = bookingServiceImpl.ShowListBookingOfTheOwner(user.getId());
+            return new ResponseEntity<>(bookings, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+    @PutMapping("/OwnerCheckIn")
+    public ResponseEntity<Booking> OwnerCheckIn(@RequestBody Booking booking){
+        Optional<Booking> booking1 = bookingServiceImpl.findOne(booking.getId());
+        if(booking1.isPresent()){
+            booking1.get().setStatus("Đang ở");
+            bookingServiceImpl.save(booking1.get());
+            return new ResponseEntity<>(booking1.get(),HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/OwnerCheckOut")
+    public ResponseEntity<Booking> OwnerCheckOut(@RequestBody Booking booking){
+        Optional<Booking> booking1 = bookingServiceImpl.findOne(booking.getId());
+        if(booking1.isPresent()){
+            booking1.get().setStatus("Đã thanh toán");
+            bookingServiceImpl.save(booking1.get());
+            return new ResponseEntity<>(booking1.get(),HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        }
     }
 }
