@@ -8,6 +8,7 @@ import com.houserenting.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -38,5 +39,10 @@ public class ImageServiceImpl implements ImageService {
             return id;
         }
         return null;
+    }
+
+    @Override
+    public List<Image> findAllByHouseId(Long id) {
+        return imageRepository.findAllByHouseId(id);
     }
 }
