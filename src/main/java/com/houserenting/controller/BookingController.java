@@ -162,4 +162,13 @@ public class BookingController {
             return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
         }
     }
+    @PostMapping("/ShowListBookingByHouseIDAndUserIdAndStatusEquaDaThanhToan/{house_id}/{user_id}")
+    public ResponseEntity<List<Booking>> ShowListBookingByHouseIDAndUserIdAndStatusEquaDaThanhToanFunction(@PathVariable Long house_id, @PathVariable Long user_id){
+        List<Booking> bookings = bookingServiceImpl.ShowListBookingByHouseIDAndUserIdAndStatusEquaDaThanhToan(house_id,user_id);
+        if(!bookings.isEmpty()){
+            return new ResponseEntity<>(bookings,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        }
+    }
 }

@@ -63,4 +63,9 @@ public class BookingServiceImpl implements BookingService {
         System.out.println(bookings);
         return bookings;
     }
+
+    @Override
+    public List<Booking> ShowListBookingByHouseIDAndUserIdAndStatusEquaDaThanhToan(Long house_id, Long user_id) {
+        return bookingRepository.ShowListBookingByHouseIDAndUserIdAndStatusEquaDaThanhToan(house_id,user_id);
+    }
 }
