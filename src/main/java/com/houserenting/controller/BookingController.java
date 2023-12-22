@@ -180,4 +180,14 @@ public class BookingController {
             return new ResponseEntity<>(bookings,HttpStatus.NOT_FOUND);
         }
     }
+
+    @PostMapping("/ShowBookingHistoryForOwner/{id}")
+    public ResponseEntity<List<Booking>> ShowBookingHistoryForOwnerFunction(@PathVariable Long id){
+        List<Booking> bookings = bookingServiceImpl.ShowBookingHistoryForOwner(id);
+        if(bookings!=null){
+            return new ResponseEntity<>(bookings,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
+        }
+    }
 }

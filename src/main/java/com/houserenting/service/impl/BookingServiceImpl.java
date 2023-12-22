@@ -70,6 +70,11 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public List<Booking> ShowBookingHistoryForOwner(Long id) {
+        return bookingRepository.ShowBookingHistoryForOwner(id);
+    }
+
+    @Override
     public Booking findOneBookingByHouseIDAndUserID(Long house_id, Long user_id) {
         return bookingRepository.findOneBookingByHouseIDAndUserID(house_id,user_id);
     }
