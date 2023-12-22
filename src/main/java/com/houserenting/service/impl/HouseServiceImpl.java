@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,6 +25,16 @@ public class HouseServiceImpl implements HouseService {
     @Override
     public Page<House> showHousePages(Pageable pageable) {
         return houseRepository.findAll( pageable);
+    }
+
+    @Override
+    public List<House> findHouseByName(String name) {
+        return houseRepository.findHouseByName("%" + name + "%");
+    }
+
+    @Override
+    public List<House> findHouseByAddress(String address) {
+        return houseRepository.findHouseByAddress("%" + address + "%");
     }
 
 
