@@ -171,4 +171,13 @@ public class BookingController {
             return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
         }
     }
+    @PostMapping("/findOneBookingByHouseIDAndUserID/{house_id}/{user_id}")
+    public ResponseEntity<Booking> findOneBookingByHouseIDAndUserIDFunction(@PathVariable Long house_id, @PathVariable Long user_id){
+       Booking bookings = bookingServiceImpl.findOneBookingByHouseIDAndUserID(house_id,user_id);
+        if(bookings!=null){
+            return new ResponseEntity<>(bookings,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(bookings,HttpStatus.NOT_FOUND);
+        }
+    }
 }
