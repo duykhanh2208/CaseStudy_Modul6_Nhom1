@@ -30,9 +30,16 @@ public class ReviewController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     @PostMapping("/")
-    public ResponseEntity<Review> create(@RequestBody Review review){
-        reviewServiceImpl.save(review);
-        return new ResponseEntity<>(review,HttpStatus.CREATED);
+    public ResponseEntity<?> create(@RequestBody Review review){
+        List<Review> reviews=reviewServiceImpl.checkReviewRecordInCaseUserCommentTwoTimes(review.getBooking().getId());
+        if(reviews.size()>0){
+            return new ResponseEntity<>("Bạn đã review nhà này rồi",HttpStatus.BAD_REQUEST);
+
+        }else {
+            reviewServiceImpl.save(review);
+            return new ResponseEntity<>(review,HttpStatus.CREATED);
+        }
+
     }
 
     @PutMapping("/{id}")

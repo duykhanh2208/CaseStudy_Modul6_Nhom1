@@ -46,4 +46,9 @@ public class ReviewServiceImpl implements ReviewService {
     public List<Review> FindListReviewByHouseID(Long id) {
         return reviewRepository.FindListReviewByHouseID(id);
     }
+
+    @Override
+    public List<Review> checkReviewRecordInCaseUserCommentTwoTimes(Long id) {
+        return reviewRepository.checkReviewRecordInCaseUserCommentTwoTimes(id);
+    }
 }

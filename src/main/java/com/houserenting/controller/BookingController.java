@@ -168,7 +168,7 @@ public class BookingController {
         if(!bookings.isEmpty()){
             return new ResponseEntity<>(bookings,HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
         }
     }
     @PostMapping("/findOneBookingByHouseIDAndUserID/{house_id}/{user_id}")
