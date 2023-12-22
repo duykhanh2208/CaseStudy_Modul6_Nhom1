@@ -3,6 +3,7 @@ import com.houserenting.model.House;
 import com.houserenting.service.HouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,15 @@ public class HouseController {
     @GetMapping("/houses/{id}")
     public ResponseEntity<Iterable<House>> showListHouseByOwner(@PathVariable Long id){
         return new ResponseEntity<>(houseServiceImpl.findAllByOwnerId(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/search/{name}")
+    public ResponseEntity<Iterable<House>> showListHouseByName(@PathVariable String name){
+        return new ResponseEntity<>(houseServiceImpl.findHouseByName(name),HttpStatus.OK);
+    }
+    @GetMapping("/searchAddress/{address}")
+    public ResponseEntity<Iterable<House>> showListHouseByPrice(@PathVariable String address){
+        return new ResponseEntity<>(houseServiceImpl.findHouseByAddress(address),HttpStatus.OK);
     }
 
 
