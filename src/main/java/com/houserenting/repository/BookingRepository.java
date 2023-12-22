@@ -23,4 +23,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query(value = "select * from booking where house_id=? and booking.status='Đã thanh toán' and user_id = ?",nativeQuery = true)
     List<Booking> ShowListBookingByHouseIDAndUserIdAndStatusEquaDaThanhToan(@Param("house_id") Long house_id,
                                                                             @Param("user_id") Long user_id);
+    @Query(value = "select * from booking where house_id = ? and user_id=? limit 1",nativeQuery = true)
+   Booking findOneBookingByHouseIDAndUserID(@Param("house_id") Long house_id,
+                                            @Param("user_id") Long user_id);
 }

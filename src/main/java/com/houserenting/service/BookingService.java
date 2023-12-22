@@ -12,4 +12,5 @@ public interface BookingService extends GeneralService<Booking>{
     List<Long> Top5HouseBooking();
     List<Booking> ShowListBookingOfTheOwner(Long id);
     List<Booking> ShowListBookingByHouseIDAndUserIdAndStatusEquaDaThanhToan(Long house_id, Long user_id);
+    Booking findOneBookingByHouseIDAndUserID(Long house_id, Long user_id);
 }
