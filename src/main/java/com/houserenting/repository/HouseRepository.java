@@ -20,6 +20,6 @@ public interface HouseRepository extends JpaRepository<House, Long> {
     List<House> findHouseByName(@Param("name") String name);
 
     @Query(value = "SELECT * FROM house WHERE address like ?",nativeQuery = true)
-    List<House> findHouseByAddress(@Param("price") String address);
+    List<House> findHouseByAddress(@Param("address") String address);
 
 }
