@@ -1,11 +1,14 @@
 package com.houserenting.controller;
+import com.houserenting.model.House;
 import com.houserenting.model.Image;
+import com.houserenting.service.HouseService;
 import com.houserenting.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -14,6 +17,8 @@ import java.util.Optional;
 public class ImageController {
     @Autowired
     private ImageService imageServiceImpl;
+    @Autowired
+    private HouseService houseServiceImpl;
 
     @GetMapping("/images")
     public ResponseEntity<Iterable<Image>> showList(){
@@ -54,5 +59,11 @@ public class ImageController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping ("/findAllByHouseId")
+    public ResponseEntity<List<Image>> findAllByHouseId(@RequestBody House house){
+        List<Image> images = imageServiceImpl.findAllByHouseId(house.getId());
+        return new ResponseEntity<>(images,HttpStatus.OK);
     }
 }

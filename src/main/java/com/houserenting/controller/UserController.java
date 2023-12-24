@@ -152,13 +152,17 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
+
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtService.generateTokenLogin(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User currentUser = userService.findByUsername(user.getUsername());
+        if (currentUser.getStatus().equals("Blocked")){
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        } else {
         return ResponseEntity.ok(new JwtResponse(jwt, currentUser.getId(), userDetails.getUsername(), currentUser.getAvatar(),currentUser.getFirstname(),currentUser.getLastname(),currentUser.getProvince(),currentUser.getDistrict(),currentUser.getWard(),currentUser.getAddress(),currentUser.getEmail(),currentUser.getPhone(),currentUser.getFrontside(),currentUser.getBackside(), userDetails.getAuthorities()));
-    }
+    }}
 
     @GetMapping("/hello")
     public ResponseEntity<String> hello() {
@@ -330,16 +334,35 @@ public class UserController {
             roles.add(role1);
             user1.get().setRoles(roles);
             userService.save(user1.get());
+            email.sendEmail(user1.get().getEmail(),"Xác thực chủ nhà","Hi "+user1.get().getFirstname()+",/n" +
+                    "Chúc ừng bạn đã đăng ký thành công thành chủ nhà, chúc bạn có những trải nghiệm vui vẻ với Airbnb. Cám ơn!");
             return new ResponseEntity<>(user1.get(),HttpStatus.OK);
         } else {
            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }}
+
+    @PutMapping("/admin/refuseUserBecomeOwner")
+    public ResponseEntity<User> refuseUserBecomeOwner(@RequestBody User user) {
+        Optional<User> user1 = userService.findById(user.getId());
+        if(user1.isPresent()){
+            user1.get().setStatus("1");
+            email.sendEmail(user1.get().getEmail(),"Xác thực chủ nhà","Hi "+user1.get().getFirstname()+",/n" +
+                    "Admin không chấp nhận quyền chủ nhà của bạn, vui lòng liên hệ admin để biết thêm chi tiết. Cám ơn!");
+            userService.save(user1.get());
+            return new ResponseEntity<>(user1.get(),HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PutMapping("/admin/blockUser")
     public ResponseEntity<User> adminBlockUser(@RequestBody User user) {
         Optional<User> user1 = userService.findById(user.getId());
         if (user1.isPresent()) {
-               user1.get().setStatus(null);
+               user1.get().setStatus("1");
                userService.save(user1.get());
+            email.sendEmail(user1.get().getEmail(),"Mở/Khóa tài khoản","Hi," +
+                    "Tài khoản của bạn vừa được mở, vui lòng đăng nhập để tiếp tục trải nghiệm, Cám ơn!!");
                return new ResponseEntity<>(user1.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -351,6 +374,8 @@ public class UserController {
         if (user1.isPresent()) {
             user1.get().setStatus("Blocked");
             userService.save(user1.get());
+            email.sendEmail(user1.get().getEmail(),"Mở/Khóa tài khoản","Hi "+user1.get().getFirstname()+",/n" +
+                    "Chúng tôi buộc phải khóa tài khoản của bạn, vui lòng liên hệ admin để biết thêm thông tin và được hỗ trợ, Cảm ơn!");
             return new ResponseEntity<>(user1.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);

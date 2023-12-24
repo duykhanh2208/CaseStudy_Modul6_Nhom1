@@ -80,10 +80,10 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register", "/api/**", "/house/**","/booking/**").permitAll()
+                        .requestMatchers("/login", "/register", "/api/**", "/house/**","/booking/**", "/review/**").permitAll()
                         .requestMatchers("/users/**").hasAnyAuthority("ROLE_RENTER","ROLE_OWNER")
                         .requestMatchers(HttpMethod.GET,"/house/**").permitAll()
-                        .requestMatchers("/house/**","/booking/**").hasAnyAuthority("ROLE_OWNER")
+                        .requestMatchers("/house/**").hasAnyAuthority("ROLE_OWNER")
                         .requestMatchers("/image/**").hasAnyAuthority("ROLE_OWNER")
                         .requestMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
                 )
