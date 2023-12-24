@@ -80,7 +80,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register", "/api/**", "/house/**","/booking/**").permitAll()
+                        .requestMatchers("/login", "/register", "/api/**", "/house/**","/booking/**", "/ws/**").permitAll()
                         .requestMatchers("/users/**").hasAnyAuthority("ROLE_RENTER","ROLE_OWNER")
                         .requestMatchers(HttpMethod.GET,"/house/**").permitAll()
                         .requestMatchers("/house/**","/booking/**").hasAnyAuthority("ROLE_OWNER")
