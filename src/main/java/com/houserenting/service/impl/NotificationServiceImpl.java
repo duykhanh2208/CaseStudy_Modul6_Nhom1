@@ -1,13 +1,13 @@
 package com.houserenting.service.impl;
 
-import com.houserenting.model.Booking;
 import com.houserenting.model.Notification;
-import com.houserenting.repository.BookingRepository;
 import com.houserenting.repository.NotificationRepository;
 import com.houserenting.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -39,5 +39,10 @@ public class NotificationServiceImpl implements NotificationService {
             return id;
         }
         return null;
+    }
+
+    @Override
+    public List<Notification> listUnReadNotifyByAccountLoginId(long accountId) {
+        return notificationRepository.listUnReadNotifyByAccountLoginId(accountId);
     }
 }
