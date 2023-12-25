@@ -13,4 +13,5 @@ public interface HouseService extends GeneralService<House> {
     List<House> findHouseByName(String name);
 
     List<House> findHouseByAddress(String address);
+    House findAHouseByBookingID(Long id);
 }
