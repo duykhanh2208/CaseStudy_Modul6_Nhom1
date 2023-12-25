@@ -79,4 +79,14 @@ public class HouseController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PostMapping("/findAHouseByBookingID/{id}")
+    public ResponseEntity<House> findAHouseByBookingIDFunction(@PathVariable Long id){
+        House house = houseServiceImpl.findAHouseByBookingID(id);
+        if(house!=null){
+            return new ResponseEntity<>(house,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+    }
 }

@@ -64,5 +64,8 @@ public class HouseServiceImpl implements HouseService {
         return null;
     }
 
-
+    @Override
+    public House findAHouseByBookingID(Long id) {
+        return houseRepository.findAHouseByBookingID(id);
+    }
 }
