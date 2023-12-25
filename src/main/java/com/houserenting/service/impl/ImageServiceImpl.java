@@ -45,4 +45,9 @@ public class ImageServiceImpl implements ImageService {
     public List<Image> findAllByHouseId(Long id) {
         return imageRepository.findAllByHouseId(id);
     }
+
+    @Override
+    public Iterable<Image> findAllByHouse(Long idHouse) {
+        return imageRepository.findAllByHouseId(idHouse);
+    }
 }

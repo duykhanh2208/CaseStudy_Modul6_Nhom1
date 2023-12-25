@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ImageService extends GeneralService<Image> {
     List<Image> findAllByHouseId(Long id);
+
+    Iterable<Image> findAllByHouse(Long idHouse);
 }

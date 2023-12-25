@@ -24,6 +24,10 @@ public class ImageController {
     public ResponseEntity<Iterable<Image>> showList(){
         return new ResponseEntity<>(imageServiceImpl.showAll(), HttpStatus.OK);
     }
+    @GetMapping("/images/{idHouse}")
+    public ResponseEntity<Iterable<Image>> findAllByHouse(@PathVariable Long idHouse){
+        return new ResponseEntity<>(imageServiceImpl.findAllByHouse(idHouse), HttpStatus.OK);
+    }
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Image>> showOne(@PathVariable Long id){
         Optional<Image> image = imageServiceImpl.findOne(id);
